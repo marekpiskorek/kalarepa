@@ -18,7 +18,3 @@ def get_all_offers_from_justjoinit():
     }
     response = requests.get(url, headers=headers)
     pprint(response.json())
-
-
-if __name__ == '__main__':
-    get_all_offers_from_justjoinit()

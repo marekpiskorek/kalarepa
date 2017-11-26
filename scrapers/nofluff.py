@@ -18,7 +18,3 @@ def get_data_from_nofluff():
     }
     response = requests.get(url, headers=headers)
     pprint(response.json())
-
-
-if __name__ == '__main__':
-    get_data_from_nofluff()
