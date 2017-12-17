@@ -1,5 +1,8 @@
-from pprint import pprint
+import json
+
 import requests
+
+from .settings import OUTPUT_FILENAME
 
 
 def get_all_offers_from_justjoinit():
@@ -17,4 +20,20 @@ def get_all_offers_from_justjoinit():
         'Referer': 'justjoin.it',
     }
     response = requests.get(url, headers=headers)
-    pprint(response.json())
+    jobs_dict = _prepare_jobs_dict(response)
+    with open(OUTPUT_FILENAME, 'w') as json_file:
+        json.dump(jobs_dict, json_file)
+
+def _prepare_jobs_dict(response):
+    with open(OUTPUT_FILENAME, 'r') as json_file:
+        jobs_dict  = json.load(json_file)
+    for offer_dict in response.json():
+        url = f'https://justjoin.it/offers/{offer_dict["id"]}'
+        if offer_dict.get('marker_icon') != 'python':
+            print(f'Not a Python link: {url}')
+            continue
+        if jobs_dict.get(url) is not None:
+            print(f'Duplicated url: {url}')
+            continue
+        jobs_dict[url] = offer_dict
+    return jobs_dict

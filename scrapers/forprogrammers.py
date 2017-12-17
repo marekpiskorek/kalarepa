@@ -3,13 +3,13 @@ import json
 from bs4 import BeautifulSoup
 import requests
 
-FILENAME = '/home/marek/workspace/kalarepa/job_offers.json'
+from .settings import OUTPUT_FILENAME
 
 
 class ForProgrammersScraper:
 
     def __init__(self):
-        with open(FILENAME, 'rb') as jfile:
+        with open(OUTPUT_FILENAME, 'rb') as jfile:
             self.json_data = json.load(jfile)
 
     def get_offers_from_forprogrammers(self):
@@ -27,10 +27,8 @@ class ForProgrammersScraper:
         for job_link in job_links:
             if job_link not in self.json_data:
                 self.get_offer_details(job_link)
-        with open(FILENAME, 'wb') as jfile:
-            # save the data into file but without duplicates
-            import ipdb; ipdb.set_trace()
-            assert 1 == 1
+        with open(OUTPUT_FILENAME, 'w') as jfile:
+            json.dump(self.json_data, jfile)
 
     def get_offer_details(self, link):
         print(f'Scrapping webpage {link}')

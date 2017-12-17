@@ -1,4 +1,4 @@
 *.swp
 *.swo
 
-job_offers.json
+scrapers/local_settings.py
