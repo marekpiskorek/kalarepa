@@ -1,4 +1,6 @@
 *.swp
 *.swo
 
-scrapers/local_settings.py
+local_settings.py
+*.sublime-workspace
+*.sublime-project
