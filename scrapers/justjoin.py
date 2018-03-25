@@ -38,6 +38,9 @@ class JustJoinScrapper:
             if offer_dict.get('marker_icon') != 'python':
                 print(f'Not a Python link: {url}')
                 continue
+            if offer_dict.get('city') not in ('Warsaw', 'Warszawa') or not offer_dict.get('remote'):
+                print(f'Not a Warsaw located or remote offer: {url}')
+                continue
             if self.json_data.get(url) is not None:
                 print(f'Duplicated url: {url}')
                 continue

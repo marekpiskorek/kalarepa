@@ -4,6 +4,9 @@ import requests
 
 from settings import OUTPUT_FILENAME
 
+URL_WARSAW = 'https://nofluffjobs.com/api/search/posting?criteria=python+city%3Dwarszawa+category%3Dbackend'
+URL_REMOTE = 'https://nofluffjobs.com/api/search/posting?criteria=python+remote%3D100+category%3Dbackend'
+
 
 class NoFluffScrapper:
 
@@ -14,10 +17,6 @@ class NoFluffScrapper:
             self.json_data = json.load(jfile)
 
     def get_data_from_nofluff(self):
-        url = (
-            'https://nofluffjobs.com/api/search/posting'
-            '?criteria=python+city%3Dwarszawa+category%3Dbackend'
-        )
         self.headers = {
             'content-type': 'application/json, text/plain',
             'User-Agent': (
@@ -27,8 +26,9 @@ class NoFluffScrapper:
             'Host': 'noflufjobs.com',
             'Referer': 'https://nofluffjobs.com',
         }
-        response = requests.get(url, headers=self.headers)
-        self._prepare_jobs_dict(response)
+        for url in (URL_REMOTE, URL_WARSAW):
+            response = requests.get(url, headers=self.headers)
+            self._prepare_jobs_dict(response)
         with open(self.filename, 'w') as json_file:
             json.dump(self.json_data, json_file)
 
