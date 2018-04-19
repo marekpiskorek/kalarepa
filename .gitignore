@@ -1,5 +1,6 @@
 *.swp
 *.swo
+*.sublime-*
 
 local_settings.py
 *.sublime-workspace
