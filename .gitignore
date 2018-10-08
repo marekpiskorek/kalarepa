@@ -3,5 +3,5 @@
 *.sublime-*
 
 local_settings.py
-*.sublime-workspace
-*.sublime-project
+
+Pipfile.lock
