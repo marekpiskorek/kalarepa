@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+
+  redis:
+    restart: unless-stopped
+    image: redis:4
+    ports:
+      - "6379"
+  web:
+    build: .
+    ports:
+      - "127.0.0.1:5000:5000"
+    env_file: ./.env
+    depends_on:
+      - redis
+    command: >
+      bash -c "pipenv run flask run -h 0.0.0.0 -p 5000"
