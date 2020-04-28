@@ -8,11 +8,13 @@ OUTPUT_FILENAME = os.environ["FILEPATH"]
 URL_WARSAW = "https://nofluffjobs.com/api/search/posting?criteria=python+city%3Dwarszawa+category%3Dbackend"
 URL_REMOTE = "https://nofluffjobs.com/api/search/posting?criteria=python+remote%3D100+category%3Dbackend"
 
+# FIXME: NoFluff has changed its whole web design and moved to more elaborate, JS-based solutions for fetching the data.
+#        It'll reqiure more work to be performed on this one.
+
 
 class NoFluffScrapper:
     def __init__(self, filename=None):
-        if filename is None:
-            self.filename = OUTPUT_FILENAME
+        self.filename = OUTPUT_FILENAME if filename is None else filename
         with open(self.filename, "rb") as jfile:
             self.json_data = json.load(jfile)
 
@@ -34,7 +36,7 @@ class NoFluffScrapper:
 
     def _prepare_jobs_dict(self, response):
         for brief_data in response.json().get("postings", []):
-            detailed_url = f'https://nofluffjobs.com/api/postingNew/{brief_data["id"]}'
+            detailed_url = f'https://nofluffjobs.com/api/posting/{brief_data["id"]}'
             # TODO: change below to session request in order to reduce headers
             response = requests.get(detailed_url, headers=self.headers)
             url = f'https://nofluffjobs.com/job/{brief_data["id"]}'

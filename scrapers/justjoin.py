@@ -8,8 +8,7 @@ OUTPUT_FILENAME = os.environ["FILEPATH"]
 
 class JustJoinScrapper:
     def __init__(self, filename=None):
-        if filename is None:
-            self.filename = OUTPUT_FILENAME
+        self.filename = OUTPUT_FILENAME if filename is None else filename
         with open(self.filename, "rb") as jfile:
             self.json_data = json.load(jfile)
 

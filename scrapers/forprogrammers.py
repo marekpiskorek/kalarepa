@@ -9,8 +9,7 @@ OUTPUT_FILENAME = os.environ["FILENAME"]
 
 class ForProgrammersScraper:
     def __init__(self, filename=None):
-        if filename is None:
-            self.filename = OUTPUT_FILENAME
+        self.filename = OUTPUT_FILENAME if filename is None else filename
         with open(self.filename, "rb") as jfile:
             self.json_data = json.load(jfile)
 
@@ -61,7 +60,7 @@ class ForProgrammersScraper:
                 "payment": payment,
                 "details": details,
                 "requirements": self._get_requirements(soup),
-                "metodologies": self._get_metodologies(soup),
+                "methodologies": self._get_methodologies(soup),
             }
         else:
             print(f"duplicate for url: {url}")
@@ -74,19 +73,19 @@ class ForProgrammersScraper:
         ]
         return {"must_have": requirements[0], "nice_to_have": requirements[1]}
 
-    def _get_metodologies(self, soup):
-        work_metodology = soup.find(attrs={"class": "features"}).find_all(
+    def _get_methodologies(self, soup):
+        work_methodology = soup.find(attrs={"class": "features"}).find_all(
             attrs={"class": "list-group-item"}
         )
-        metodologies = {}
-        for wm in work_metodology:
+        methodologies = {}
+        for wm in work_methodology:
             value = hasattr(wm, "attrs") and "checked" in wm.attrs["class"]
             if value:
-                # place detailed metodology description if there is any
+                # place detailed methodology description if there is any
                 value = wm.find(attrs={"class": "text-muted"})
                 value = value.text.strip()[2:] if value is not None else True
             title = wm.text.strip()
             # Offers may have detail in text, we remove it since it's duplicate
             title = title.split("\n")[0] if "\n" in title else title
-            metodologies[title] = value
-        return metodologies
+            methodologies[title] = value
+        return methodologies
